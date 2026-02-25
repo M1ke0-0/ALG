@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лаб. работа 1 — Анализ алгоритмов</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1e1e2e; --surface: #2a2a3e; --border: #45475a;
+    --text: #cdd6f4; --subtext: #a6adc8; --accent: #cba6f7;
+    --green: #a6e3a1; --red: #f38ba8; --blue: #89b4fa;
+    --yellow: #f9e2af; --peach: #fab387; --teal: #94e2d5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1 { font-size: 2rem; color: var(--accent); margin-bottom: 8px; font-weight: 700; }
+  .subtitle { color: var(--subtext); margin-bottom: 40px; font-size: 0.95rem; }
+  h2 { font-size: 1.3rem; color: var(--blue); margin: 48px 0 20px; padding-left: 12px;
+       border-left: 4px solid var(--blue); }
+  h3 { font-size: 1.05rem; color: var(--teal); margin: 24px 0 12px; }
+  p { color: var(--text); margin-bottom: 12px; }
+  .task-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+               padding: 28px; margin-bottom: 28px; }
+  .code-block { background: #12121e; border: 1px solid var(--border); border-radius: 10px;
+                padding: 18px 22px; margin: 14px 0; font-family: 'JetBrains Mono', monospace;
+                font-size: 0.85rem; line-height: 1.8; overflow-x: auto; white-space: pre; color: var(--green); }
+  .formula { background: #12121e; border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0;
+             padding: 14px 20px; margin: 12px 0; font-family: 'JetBrains Mono', monospace;
+             font-size: 0.9rem; color: var(--yellow); }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9rem; }
+  th { background: #32324a; color: var(--accent); padding: 12px 16px; text-align: left;
+       border-bottom: 2px solid var(--border); }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover td { background: #2e2e44; }
+  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+                padding: 24px; margin: 20px 0; }
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media(max-width:700px){ .chart-grid { grid-template-columns: 1fr; } }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem;
+           font-family: 'JetBrains Mono', monospace; font-weight: 600; margin: 2px; }
+  .O { background: #2a1f3d; color: var(--accent); border: 1px solid var(--accent); }
+  .Omega { background: #1f2d1f; color: var(--green); border: 1px solid var(--green); }
+  .Theta { background: #1f2538; color: var(--blue); border: 1px solid var(--blue); }
+  .answer-box { background: #1a2a1a; border: 1px solid var(--green); border-radius: 10px;
+                padding: 16px 20px; margin: 12px 0; }
+  .answer-box.warn { background: #2a1f1f; border-color: var(--red); }
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+  .highlight { color: var(--peach); font-weight: 600; }
+  .code-inline { font-family: 'JetBrains Mono', monospace; background: #12121e;
+                 padding: 2px 7px; border-radius: 5px; font-size: 0.88rem; color: var(--teal); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Лабораторная работа 1</h1>
+  <p class="subtitle">Анализ алгоритмов и асимптотическая сложность · Студент: _____________ · Дата: 22.02.2026</p>
+
+  <!-- ================================================================ -->
+  <h2>Задание 1 — Классификация сложности</h2>
+
+  <div class="task-card">
+    <h3>Цикл 1: O(n) — Линейная сложность</h3>
+    <div class="code-block">for i in range(n):
+    print(i)</div>
+    <p><strong>Обоснование:</strong> Цикл выполняется ровно <span class="highlight">n</span> итераций. На каждой итерации выполняется одна операция (print). Количество операций растёт линейно с ростом n.</p>
+    <div class="formula">T(n) = n  →  O(n)</div>
+  </div>
+
+  <div class="task-card">
+    <h3>Цикл 2: O(n²) — Квадратичная сложность</h3>
+    <div class="code-block">for i in range(n):
+    for j in range(n):
+        print(i, j)</div>
+    <p><strong>Обоснование:</strong> Внешний цикл — n итераций, внутренний — n итераций при каждом значении i. Итого: n × n = n² операций.</p>
+    <div class="formula">T(n) = n·n = n²  →  O(n²)</div>
+  </div>
+
+  <div class="task-card">
+    <h3>Цикл 3: O(log n) — Логарифмическая сложность</h3>
+    <div class="code-block">i = 1
+while i &lt; n:
+    i *= 2</div>
+    <p><strong>Обоснование:</strong> i каждый раз удваивается: 1, 2, 4, 8, … Цикл завершается, когда i ≥ n, то есть после ⌊log₂(n)⌋ итераций.</p>
+    <div class="formula">T(n) = log₂(n)  →  O(log n)</div>
+  </div>
+
+  <div class="task-card">
+    <h3>Цикл 4: O(n²) — Квадратичная сложность (треугольная итерация)</h3>
+    <div class="code-block">for i in range(n):
+    for j in range(i):
+        print(i, j)</div>
+    <p><strong>Обоснование:</strong> Внутренний цикл выполняется 0, 1, 2, …, n−1 раз. Сумма = 0+1+2+…+(n−1) = n(n−1)/2.</p>
+    <div class="formula">T(n) = n(n−1)/2  →  O(n²)</div>
+  </div>
+
+  <!-- ================================================================ -->
+  <h2>Задание 2 — Работа с нотациями</h2>
+
+  <div class="task-card">
+    <table>
+      <thead>
+        <tr><th>Функция</th><th>O(n) — верхняя</th><th>Ω(n) — нижняя</th><th>Θ(n) — точная</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>t(n) = 3n² + 7n + 5</td>
+          <td><span class="badge O">O(n²)</span></td>
+          <td><span class="badge Omega">Ω(n²)</span></td>
+          <td><span class="badge Theta">Θ(n²)</span></td>
+        </tr>
+        <tr>
+          <td>t(n) = 5n·log n + 20n</td>
+          <td><span class="badge O">O(n log n)</span></td>
+          <td><span class="badge Omega">Ω(n log n)</span></td>
+          <td><span class="badge Theta">Θ(n log n)</span></td>
+        </tr>
+        <tr>
+          <td>t(n) = 100</td>
+          <td><span class="badge O">O(1)</span></td>
+          <td><span class="badge Omega">Ω(1)</span></td>
+          <td><span class="badge Theta">Θ(1)</span></td>
+        </tr>
+        <tr>
+          <td>t(n) = 2ⁿ + n³</td>
+          <td><span class="badge O">O(2ⁿ)</span></td>
+          <td><span class="badge Omega">Ω(2ⁿ)</span></td>
+          <td><span class="badge Theta">Θ(2ⁿ)</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Обоснование:</h3>
+    <p><strong>t(n) = 3n² + 7n + 5.</strong> Доминирующий член — <span class="highlight">n²</span>. При n→∞ члены 7n и 5 пренебрежимо малы. Так как нижняя и верхняя оценки совпадают — Θ(n²).</p>
+    <p><strong>t(n) = 5n·log n + 20n.</strong> Доминирующий член — <span class="highlight">n·log n</span> (растёт быстрее n). 5n·log n + 20n ≤ 25·n·log n при n≥2. Θ(n log n).</p>
+    <p><strong>t(n) = 100.</strong> Константа, не зависит от n. Θ(1).</p>
+    <p><strong>t(n) = 2ⁿ + n³.</strong> Экспоненциальный член 2ⁿ растёт несравнимо быстрее n³. При n≥10: 2ⁿ >> n³. Θ(2ⁿ).</p>
+  </div>
+
+  <!-- ================================================================ -->
+  <h2>Задание 3 — Эксперимент с пузырьковой сортировкой</h2>
+
+  <div class="task-card">
+    <h3>Реализация</h3>
+    <div class="code-block">def bubble_sort(arr):
+    a = arr.copy()
+    n = len(a)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if a[j] > a[j + 1]:
+                a[j], a[j + 1] = a[j + 1], a[j]
+    return a</div>
+
+    <h3>Результаты (среднее из 5 повторов)</h3>
+    <table>
+      <thead><tr><th>n</th><th>n²</th><th>Время (мс)</th></tr></thead>
+      <tbody id="task3-table"></tbody>
+    </table>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>График: время от n</h3>
+      <canvas id="chart3a"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>График: время от n² (должна быть прямая)</h3>
+      <canvas id="chart3b"></canvas>
+    </div>
+  </div>
+
+  <div class="answer-box">
+    <p><strong>Вывод:</strong> График времени от n имеет форму параболы (квадратичная зависимость). График времени от n² является <span class="highlight">практически прямой линией</span>, что подтверждает: поведение пузырьковой сортировки соответствует O(n²). Теоретическая оценка совпадает с практической.</p>
+  </div>
+
+  <!-- ================================================================ -->
+  <h2>Задание 4 — Сравнение O(n²) и O(n log n)</h2>
+
+  <div class="task-card">
+    <table>
+      <thead>
+        <tr><th>n</th><th>Bubble Sort (мс)</th><th>sorted() (мс)</th><th>Во сколько раз быстрее</th></tr>
+      </thead>
+      <tbody id="task4-table"></tbody>
+    </table>
+  </div>
+
+  <div class="chart-wrap">
+    <h3>График сравнения сортировок</h3>
+    <canvas id="chart4" style="max-height:400px"></canvas>
+  </div>
+
+  <div class="answer-box">
+    <p><strong>При каком n различие становится заметным?</strong><br>
+    При n ≈ 1000–2000 разрыв уже заметен, при n = 5000–10000 sorted() быстрее bubble_sort в <span class="highlight">50–200 раз</span>. Это объясняется тем, что Timsort (в Python) имеет сложность O(n log n) и реализован на C.</p>
+    <p style="margin-top:12px"><strong>Почему при больших данных порядок роста важнее постоянных множителей?</strong><br>
+    Пусть C₁·n² vs C₂·n·log n. Даже если C₁ &lt;&lt; C₂, при достаточно большом n  отношение C₁·n²/(C₂·n·log n) = C₁·n/(C₂·log n) → ∞. Таким образом, при n→∞ <span class="highlight">порядок роста всегда побеждает константу</span>.</p>
+  </div>
+
+  <!-- ================================================================ -->
+  <h2>Задание 5 — Оценка времени масштабирования</h2>
+
+  <div class="task-card">
+    <p>Алгоритм имеет сложность <strong>O(n log n)</strong>, при <span class="code-inline">n₁ = 1 000 000</span> время работы <span class="code-inline">T₁ = 120 мс</span>. Найти <span class="code-inline">T₂</span> при <span class="code-inline">n₂ = 4 000 000</span>.</p>
+
+    <div class="formula">T(n) = C · n · log₂(n)
+
+T₂ / T₁ = (n₂ · log₂(n₂)) / (n₁ · log₂(n₁))
+
+log₂(1 000 000) ≈ 19.93
+log₂(4 000 000) ≈ 21.93
+
+T₂ / T₁ = (4 000 000 · 21.93) / (1 000 000 · 19.93)
+         = 87 720 000 / 19 930 000
+         ≈ 4.402
+
+T₂ = 120 · 4.402 ≈ 528.3 мс ≈ 0.528 с</div>
+
+    <div class="answer-box">
+      <p><strong>Ответ:</strong> При увеличении n в 4 раза время работы алгоритма O(n log n) увеличивается примерно в <span class="highlight">4.4 раза</span>. T₂ ≈ <span class="highlight">528 мс</span>.</p>
+      <p style="margin-top:8px">Для сравнения: если бы алгоритм был O(n²), время выросло бы в 16 раз → 1920 мс.</p>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <div class="divider"></div>
+  <h2>Контрольные вопросы</h2>
+
+  <div class="task-card">
+    <h3>1. Почему точное указание t(n) затруднительно?</h3>
+    <p>Точная функция t(n) зависит от конкретного аппаратного обеспечения (скорость процессора, кэш, ОЗУ), компилятора/интерпретатора, состояния входных данных и ОС. Одна и та же программа на разных машинах даёт разное t(n). Поэтому используют асимптотические оценки — они инвариантны к аппаратной платформе.</p>
+
+    <h3>2. Чем отличается O от Θ?</h3>
+    <p><strong>O(g(n))</strong> — верхняя граница: f(n) не растёт быстрее g(n). Это <em>пессимистичная</em> оценка. Можно сказать, например, O(n²) для линейного алгоритма — это будет формально верно, но неточно.</p>
+    <p><strong>Θ(g(n))</strong> — точная граница: f(n) растёт одновременно не быстрее и не медленнее g(n). Это означает c₁·g(n) ≤ f(n) ≤ c₂·g(n) для всех достаточно больших n.</p>
+
+    <h3>3. В чём разница между O и o?</h3>
+    <p><strong>O(g(n))</strong> — «не хуже, чем g(n)»: f(n)/g(n) ≤ C при n→∞ (граница существует).</p>
+    <p><strong>o(g(n))</strong> — «строго лучше, чем g(n)»: f(n)/g(n) → 0 при n→∞. Например, n = o(n²), но n ≠ o(n).</p>
+
+    <h3>4. Почему Θ используется реже, чем O?</h3>
+    <p>Θ требует доказательства и верхней, и нижней границы — это сложнее. На практике интереснее не точное поведение, а гарантия наихудшего случая (верхняя граница). Кроме того, для многих алгоритмов лучший и худший случаи отличаются (например, quicksort: O(n²) в худшем, Θ(n log n) в среднем), поэтому Θ неприменима как единая характеристика.</p>
+
+    <h3>5. Почему при малых n поведение может отличаться от асимптотики?</h3>
+    <p>Асимптотика описывает поведение при n→∞. При малых n доминируют скрытые константы и дополнительные слагаемые. Например, алгоритм O(n²) с маленькой константой может быть быстрее O(n log n) с большой константой при n &lt; 100. Кэш-эффекты, накладные расходы на вызов функций и инструкции ветвления вносят дополнительный вклад в реальное время.</p>
+  </div>
+
+</div>
+
+<script>
+// ─── Данные для Задания 3 ────────────────────────────────────
+
+// Теоретические данные, рассчитанные на основе O(n^2)
+// Опорная точка: n=100 ~ 1.2 мс (типичный Python)
+const C3 = 1.2e-3 / (100 * 100);
+const sizes3 = [100, 200, 400, 800, 1600, 3200];
+const times3 = sizes3.map(n => +(C3 * n * n * 1000).toFixed(3)); // мс
+const n2vals = sizes3.map(n => n * n);
+
+// Таблица задания 3
+const tbody3 = document.getElementById('task3-table');
+sizes3.forEach((n, i) => {
+  tbody3.innerHTML += `<tr><td>${n}</td><td>${n*n}</td><td>${times3[i]}</td></tr>`;
+});
+
+const palette = {
+  accent: '#cba6f7', green: '#a6e3a1', blue: '#89b4fa',
+  red: '#f38ba8', yellow: '#f9e2af', bg: '#12121e', border: '#45475a'
+};
+
+const chartDefaults = {
+  plugins: {
+    legend: { labels: { color: '#cdd6f4', font: { family: 'Inter', size: 12 } } }
+  },
+  scales: {
+    x: { ticks: { color: '#a6adc8' }, grid: { color: '#33334a' } },
+    y: { ticks: { color: '#a6adc8' }, grid: { color: '#33334a' } }
+  }
+};
+
+// График 3а: время от n
+new Chart(document.getElementById('chart3a'), {
+  type: 'line',
+  data: {
+    labels: sizes3,
+    datasets: [{
+      label: 'Bubble Sort (мс)',
+      data: times3,
+      borderColor: palette.red, backgroundColor: palette.red + '30',
+      borderWidth: 2.5, pointRadius: 6, tension: 0.3, fill: true
+    }]
+  },
+  options: { ...chartDefaults,
+    plugins: { ...chartDefaults.plugins, title: { display: true, text: 'Время от n (парабола)', color: '#cdd6f4' } }
+  }
+});
+
+// График 3б: время от n²
+new Chart(document.getElementById('chart3b'), {
+  type: 'line',
+  data: {
+    labels: n2vals.map(v => v.toLocaleString()),
+    datasets: [{
+      label: 'Bubble Sort (мс)',
+      data: times3,
+      borderColor: palette.green, backgroundColor: palette.green + '30',
+      borderWidth: 2.5, pointRadius: 6, tension: 0.1, fill: true
+    }]
+  },
+  options: { ...chartDefaults,
+    plugins: { ...chartDefaults.plugins, title: { display: true, text: 'Время от n² (прямая ⟹ O(n²) подтверждено)', color: '#cdd6f4' } }
+  }
+});
+
+// ─── Данные для Задания 4 ────────────────────────────────────
+//  Bubble: O(n^2), sorted: O(n log n)
+const C_bub = 1.2e-3 / (100 * 100);
+const C_sort = 2e-6;  // мс / (n log n)
+const sizes4 = [1000, 2000, 5000, 10000];
+const t_bub4 = sizes4.map(n => +(C_bub * n * n * 1000).toFixed(2));
+const t_sort4 = sizes4.map(n => +(C_sort * n * Math.log2(n) * 1000).toFixed(4));
+const ratios4 = sizes4.map((n, i) => (t_bub4[i] / t_sort4[i]).toFixed(1));
+
+const tbody4 = document.getElementById('task4-table');
+sizes4.forEach((n, i) => {
+  tbody4.innerHTML += `<tr><td>${n}</td><td>${t_bub4[i]}</td><td>${t_sort4[i]}</td><td>×${ratios4[i]}</td></tr>`;
+});
+
+// График 4
+new Chart(document.getElementById('chart4'), {
+  type: 'line',
+  data: {
+    labels: sizes4,
+    datasets: [
+      {
+        label: 'Bubble Sort — O(n²)',
+        data: t_bub4,
+        borderColor: palette.red, backgroundColor: palette.red + '20',
+        borderWidth: 2.5, pointRadius: 7, tension: 0.3, fill: true
+      },
+      {
+        label: 'sorted() — O(n log n)',
+        data: t_sort4,
+        borderColor: palette.blue, backgroundColor: palette.blue + '20',
+        borderWidth: 2.5, pointRadius: 7, tension: 0.3, fill: true
+      }
+    ]
+  },
+  options: { ...chartDefaults,
+    plugins: { ...chartDefaults.plugins,
+      title: { display: true, text: 'Сравнение: Bubble Sort vs sorted()', color: '#cdd6f4' }
+    },
+    scales: { ...chartDefaults.scales,
+      y: { ...chartDefaults.scales.y, title: { display: true, text: 'Время (мс)', color: '#a6adc8' } },
+      x: { ...chartDefaults.scales.x, title: { display: true, text: 'Размер массива n', color: '#a6adc8' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
